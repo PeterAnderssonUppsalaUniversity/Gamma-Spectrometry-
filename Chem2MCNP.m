@@ -17,7 +17,7 @@ function [atomnum , nums, els, MCNP] = Chem2MCNP(mat)
 % 
 % el =
 % 
-%   1×2 cell array
+%   1Ã—2 cell array
 % 
 %     {'H'}    {'O'}
 % 
@@ -41,4 +41,12 @@ for i = 1:length(Z), cellZ{i} = num2str(Z(i)); end
 MCNP = [strjoin( strsplit(strjoin(strsplit([strjoin( els, '))) '),')))']))) , strsplit(num2str(nums(1:end-1)))), num2str(nums(end))];
 MCNP = regexprep(MCNP, '[A-Z]',' $&') ;
 MCNP = regexprep(MCNP,')))', '000 ');
+
+DoubleLetters = [];
+for i = 1:length(Acr)
+    if length(Acr{i}) >1
+        DoubleLetters = [DoubleLetters , i];
+    end
+end
+MCNP = regexprep(MCNP, Acr(DoubleLetters),cellZ(DoubleLetters));
 MCNP = regexprep(MCNP, Acr,cellZ);
